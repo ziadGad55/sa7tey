@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sa7ty/core/functions/navigation.dart';
+import 'package:sa7ty/feature/intro/onboarding/onboardingscreen.dart';
 import 'package:sa7ty/feature/intro/welcomscreen.dart';
 
 class Splachscreen extends StatelessWidget {
@@ -8,7 +9,7 @@ class Splachscreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 3), () {
-     context.pushReplacement(context, Welcomscreen());
+     context.pushReplacement(context,Onboardingscreen());
     });
     return Scaffold(
       body: Center(
