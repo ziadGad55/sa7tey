@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:sa7ty/core/services/cashing.dart';
 import 'package:sa7ty/core/utils/colors.dart';
 import 'package:sa7ty/core/utils/fonts.dart';
 import 'package:sa7ty/feature/intro/welcomscreen.dart';
@@ -11,6 +13,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await appcashing.init();
   runApp(const MainApp());
 }
 
@@ -19,9 +22,19 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return MaterialApp(
+      locale: const Locale('ar'),
+      supportedLocales: const [
+        Locale('ar'),
+      ],
+      localizationsDelegates: const[
+         GlobalMaterialLocalizations.delegate,
+         GlobalWidgetsLocalizations.delegate,
+         GlobalCupertinoLocalizations.delegate,
+
+      ],
       theme: ThemeData(
-        fontFamily: 'Cairo',
+          fontFamily: 'Cairo',
           appBarTheme: AppBarTheme(),
           inputDecorationTheme: InputDecorationTheme(
             fillColor: Appcolors.secondary,
@@ -45,6 +58,7 @@ class MainApp extends StatelessWidget {
             ),
           )),
       debugShowCheckedModeBanner: false,
+      
       home: Splachscreen(),
     );
   }

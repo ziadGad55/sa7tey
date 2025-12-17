@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sa7ty/core/functions/navigation.dart';
+import 'package:sa7ty/core/services/cashing.dart';
 import 'package:sa7ty/core/utils/colors.dart';
 import 'package:sa7ty/core/utils/fonts.dart';
 import 'package:sa7ty/core/widget/custombuttons.dart';
@@ -24,11 +26,12 @@ class _OnboardingscreenState extends State<Onboardingscreen> {
         actions: [
           TextButton(
             onPressed: () {
+              appcashing.cashdata(key: appcashing.onBoarding, value: true);
               context.pushReplacement(context, Welcomscreen());
             },
-            child: const Text(
+            child: Text(
               'تخطي',
-              style: TextStyle(color: Appcolors.primary),
+              style: getmediamstyle(color: Appcolors.primary),
             ),
           ),
         ],
@@ -50,9 +53,9 @@ class _OnboardingscreenState extends State<Onboardingscreen> {
                   return Column(
                     children: [
                       Spacer(),
-                      Image.asset(
+                      SvgPicture.asset(
                         pages[index].image,
-                        height: 300,
+                        height: 350,
                         width: 300,
                         fit: BoxFit.cover,
                       ),
@@ -64,9 +67,10 @@ class _OnboardingscreenState extends State<Onboardingscreen> {
                       Text(
                         pages[index].body,
                         style: getmediamstyle(),
+                        textAlign: TextAlign.center,
                       ),
                       Spacer(
-                        flex: 2,
+                        flex: 4,
                       ),
                       SizedBox(
                         height: 60,
@@ -74,22 +78,28 @@ class _OnboardingscreenState extends State<Onboardingscreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SmoothPageIndicator(
-                                controller: pageController,
-                                count: pages.length,
-        
-                                effect: WormEffect(
-                                  dotColor: Appcolors.grey,
-                                  activeDotColor: Appcolors.primary,
-                                  dotHeight: 8,
-                                  dotWidth: 16,
-                                  spacing: 8,
-                                ),),
-                            custombuttons(
-                              onPressed: () {},
-                              text: 'التالي',
-                              height: 50,
-                              width: 100,
+                              controller: pageController,
+                              count: pages.length,
+                              effect: WormEffect(
+                                dotColor: Appcolors.grey,
+                                activeDotColor: Appcolors.primary,
+                                dotHeight: 8,
+                                dotWidth: 16,
+                                spacing: 8,
+                              ),
                             ),
+                            if (pages.length - 1 == currentindex)
+                              custombuttons(
+                                onPressed: () {
+                                  appcashing.cashdata(
+                                      key: appcashing.onBoarding, value: true);
+                                  context.pushReplacement(
+                                      context, Welcomscreen());
+                                },
+                                text: 'هيا بنا',
+                                height: 50,
+                                width: 100,
+                              ),
                           ],
                         ),
                       )
