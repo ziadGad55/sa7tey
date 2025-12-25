@@ -4,7 +4,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:sa7ty/core/services/cashing.dart';
 import 'package:sa7ty/core/utils/colors.dart';
 import 'package:sa7ty/core/utils/fonts.dart';
-import 'package:sa7ty/feature/intro/welcomscreen.dart';
 import 'package:sa7ty/firebase_options.dart';
 import 'package:sa7ty/feature/intro/splachscreen.dart';
 
@@ -41,19 +40,19 @@ class MainApp extends StatelessWidget {
             filled: true,
             hintStyle: getsmallstyle(size: 15, color: Appcolors.grey),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: Appcolors.grey),
+              borderRadius: BorderRadius.circular(22),
+              borderSide: BorderSide(color: Appcolors.white),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: Appcolors.grey),
+              borderRadius: BorderRadius.circular(22),
+              borderSide: BorderSide(color: Appcolors.white),
             ),
             errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(22),
               borderSide: BorderSide(color: Colors.red),
             ),
             focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(22),
               borderSide: BorderSide(color: Colors.red),
             ),
           )),

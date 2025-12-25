@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:sa7ty/core/constant/enum.dart';
+import 'package:sa7ty/core/functions/navigation.dart';
 import 'package:sa7ty/core/utils/colors.dart';
 import 'package:sa7ty/core/utils/fonts.dart';
 import 'package:sa7ty/core/widget/custombuttons.dart';
+import 'package:sa7ty/feature/auth/presentation/page/login.dart';
 
 class Welcomscreen extends StatelessWidget {
   const Welcomscreen({super.key});
@@ -55,7 +58,7 @@ class Welcomscreen extends StatelessWidget {
                       height: 20,
                     ),
                     custombuttons(
-                      onPressed: () {},
+                      onPressed: () {context.push(context, Login(slectedusertype: usertype.doctor));},
                       text: 'دكتور',
                       width: double.infinity,
                       height: 70,
@@ -66,7 +69,7 @@ class Welcomscreen extends StatelessWidget {
                       height: 20,
                     ),
                     custombuttons(
-                      onPressed: () {},
+                      onPressed: () {context.push(context, Login( slectedusertype: usertype.patient));},
                       text: 'مريض',
                       width: double.infinity,
                       height: 70,
