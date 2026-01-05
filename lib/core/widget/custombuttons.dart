@@ -11,7 +11,7 @@ class custombuttons extends StatelessWidget {
     this.width,
     this.height,
     required this.text,
-    this.textstyle,
+    this.textstyle, this.curve,
   });
   final String text;
   final Color? color;
@@ -19,6 +19,7 @@ class custombuttons extends StatelessWidget {
   final double? width;
   final double? height;
   final TextStyle? textstyle;
+  final double? curve;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class custombuttons extends StatelessWidget {
           style: ElevatedButton.styleFrom(
               backgroundColor: color ?? Appcolors.primary,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30))),
+                  borderRadius: BorderRadius.circular(curve??30))),
           child: Text(
             text,
             style: textstyle ?? getsmallstyle(color: Appcolors.white),

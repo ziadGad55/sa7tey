@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sa7ty/core/constant/enum.dart';
+import 'package:sa7ty/core/functions/dialog.dart';
 import 'package:sa7ty/core/functions/navigation.dart';
 import 'package:sa7ty/core/utils/colors.dart';
 import 'package:sa7ty/core/utils/fonts.dart';
 import 'package:sa7ty/core/widget/custombuttons.dart';
+import 'package:sa7ty/feature/auth/presentation/bloc/auth_bloc.dart';
+import 'package:sa7ty/feature/auth/presentation/bloc/auth_event.dart';
+import 'package:sa7ty/feature/auth/presentation/bloc/auth_state.dart';
+import 'package:sa7ty/feature/auth/presentation/page/doctor_register.dart';
 import 'package:sa7ty/feature/auth/presentation/page/login.dart';
 import 'package:sa7ty/feature/auth/presentation/widget/emailfieldwidget.dart';
 import 'package:sa7ty/feature/auth/presentation/widget/passfieldwidget.dart';
@@ -30,109 +36,133 @@ class _registerState extends State<register> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: SingleChildScrollView(
-        child: Form(
-          key: formkey,
-          child: Center(
-              child: Padding(
-            padding: const EdgeInsets.all(22.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: 20,
-                ),
-                Image.asset(
-                  'assets/images/Se7tec__1_-removebg-preview 1.png',
-                  width: 230,
-                  height: 230,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  'سجل حساب جديد كـ ${usertypehandl()}',
-                  style: gettilestyle(size: 20),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                TextFormField(
-                  controller: namecontroller,
-                  decoration: InputDecoration(
-                    hintText: 'الأسم ',
-                    prefixIcon: Icon(
-                      Icons.person,
-                      color: Appcolors.primary,
-                    ),
+      body: BlocListener<authBloc, AuthState>(
+        listener: (context, state) {
+          if (state is AuthLoading) {
+            showLoadingDialog(context);
+          } else if (state is AuthFailure) {
+            Navigator.pop(context);
+            showErrorDialog(context, state.errorMessage);
+          } else if (state is AuthSuccess) {
+            Navigator.pop(context);
+            if (widget.slectedusertype2 == usertype.doctor) {
+              context.pushandremoveuntil(context, DoctorRegister());
+            } else if (widget.slectedusertype2 == usertype.patient) {
+              context.pushandremoveuntil(context, widget);
+            }
+          }
+        },
+        child: SingleChildScrollView(
+          child: Form(
+            key: formkey,
+            child: Center(
+                child: Padding(
+              padding: const EdgeInsets.all(22.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 20,
                   ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'الأسم مطلوب';
-                    } else {
-                      return null;
-                    }
-                  },
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Column(
-                  children: [
-                    emailfieldwidget(emailcontroller: emailcontroller),
-                    SizedBox(
-                      height: 20,
+                  Image.asset(
+                    'assets/images/Se7tec__1_-removebg-preview 1.png',
+                    width: 230,
+                    height: 230,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    'سجل حساب جديد كـ ${usertypehandl()}',
+                    style: gettilestyle(size: 20),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  TextFormField(
+                    controller: namecontroller,
+                    decoration: InputDecoration(
+                      hintText: 'الأسم ',
+                      prefixIcon: Icon(
+                        Icons.person,
+                        color: Appcolors.primary,
+                      ),
                     ),
-                    passfieldwidget(
-                      passwordcontroller: passwordcontroller,
-                      isObscure: isObscure,
-                      onPressed: () {
-                        setState(() {
-                          isObscure = !isObscure;
-                        });
-                      },
-                    ),
-                    SizedBox(height: 20),
-                    custombuttons(
-                      onPressed: () {
-                        if (formkey.currentState!.validate()) {
-                          context.pushReplacement(context, widget);
-                        }
-                      },
-                      text: 'انشاء حساب',
-                      width: double.infinity,
-                      height: 60,
-                      color: Appcolors.primary,
-                      textstyle: gettilestyle(color: Appcolors.white, size: 20),
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          ' لديك حساب؟',
-                          style: getsmallstyle(size: 16, color: Appcolors.dark),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            context.pushReplacement(
-                                context,
-                                Login(
-                                    slectedusertype: widget.slectedusertype2));
-                          },
-                          child: Text(
-                            'سجل حساب',
-                            style: getsmallstyle(
-                                size: 16, color: Appcolors.primary),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'الأسم مطلوب';
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Column(
+                    children: [
+                      emailfieldwidget(emailcontroller: emailcontroller),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      passfieldwidget(
+                        passwordcontroller: passwordcontroller,
+                        isObscure: isObscure,
+                        onPressed: () {
+                          setState(() {
+                            isObscure = !isObscure;
+                          });
+                        },
+                      ),
+                      SizedBox(height: 20),
+                      custombuttons(
+                        onPressed: () {
+                          if (formkey.currentState!.validate()) {
+                            context.read<authBloc>().add(registerEvent(
+                                namecontroller.text,
+                                emailcontroller.text,
+                                passwordcontroller.text,
+                                widget.slectedusertype2));
+                          }
+                        },
+                        text: 'انشاء حساب',
+                        width: double.infinity,
+                        height: 60,
+                        color: Appcolors.primary,
+                        textstyle:
+                            gettilestyle(color: Appcolors.white, size: 20),
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            ' لديك حساب؟',
+                            style:
+                                getsmallstyle(size: 16, color: Appcolors.dark),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          )),
+                          TextButton(
+                            onPressed: () {
+                              context.pushReplacement(
+                                  context,
+                                  Login(
+                                      slectedusertype:
+                                          widget.slectedusertype2));
+                            },
+                            child: Text(
+                              'سجل حساب',
+                              style: getsmallstyle(
+                                  size: 16, color: Appcolors.primary),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            )),
+          ),
         ),
       ),
     );
