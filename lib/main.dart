@@ -8,11 +8,16 @@ import 'package:sa7ty/core/utils/fonts.dart';
 import 'package:sa7ty/feature/auth/presentation/bloc/auth_bloc.dart';
 import 'package:sa7ty/firebase_options.dart';
 import 'package:sa7ty/feature/intro/splachscreen.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await Supabase.initialize(
+    url: 'https://cjyjomvuxquluxscglje.supabase.co',
+    anonKey: 'sb_publishable_7K74x7iWpOV5e93uP9X75g_3x8zWLs0',
   );
   await appcashing.init();
   runApp(const MainApp());

@@ -8,6 +8,7 @@ import 'package:sa7ty/core/utils/colors.dart';
 import 'package:sa7ty/core/utils/fonts.dart';
 import 'package:sa7ty/core/widget/custombuttons.dart';
 import 'package:sa7ty/core/widget/my_field.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DoctorRegister extends StatefulWidget {
   const DoctorRegister({super.key});
@@ -26,6 +27,8 @@ class _DoctorRegisterState extends State<DoctorRegister> {
   TextEditingController phone1controller = TextEditingController();
   TextEditingController phone2controller = TextEditingController();
   String? path;
+  String?url;
+  File? image;
   @override
   Widget build(BuildContext context) {
     starttimecontroller.text = TimeOfDay.now().format(context);
@@ -58,6 +61,7 @@ class _DoctorRegisterState extends State<DoctorRegister> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       InkWell(
+                        borderRadius: BorderRadius.circular(60),
                         onTap: () {
                           uplodimage();
                         },
@@ -276,14 +280,28 @@ class _DoctorRegisterState extends State<DoctorRegister> {
     );
   }
 
+
+  Future<void>uplodimagetosb( File path)async {
+    final filepath='doctor/${DateTime.now().millisecond.toString()}.jpg';
+    final storageRespons=await Supabase.instance.client.storage.from('doctor').upload(filepath, path);
+    final publicurl= Supabase.instance.client.storage.from('doctor').getPublicUrl(filepath);
+    setState(() {
+      url=publicurl;
+    });
+  }
+
   uplodimage() async {
     XFile? pickImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (pickImage != null) {
+
       setState(() {
         path = pickImage.path;
+        image=File(pickImage.path);
       });
+
+      await uplodimagetosb(image!);
     }
   }
 }
